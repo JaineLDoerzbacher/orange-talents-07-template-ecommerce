@@ -30,6 +30,10 @@ public class Produto {
     @OneToMany(mappedBy = "produto", cascade = CascadeType.PERSIST)
     private Set<CaracteristicasProduto> caracteristicasProduto = new HashSet<>();  // um produto pode ter várias características
 
+
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
+    private Set<Opiniao> opinioes = new HashSet<>();
+
     @ManyToOne
     private Categoria categoria;
 
