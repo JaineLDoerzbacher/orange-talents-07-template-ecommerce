@@ -38,6 +38,10 @@ public class Produto {
     @ManyToOne
     private Usuario vendedor;
 
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
+    private Set<ImagemDoProduto> listaImagens = new HashSet<>();
+
+
 
     public Produto() {
     }
@@ -50,6 +54,13 @@ public class Produto {
         this.quantidade = quantidade;
         this.descricao = descricao;
 
+        /*
+        Set<CaracteristicasProduto> caracteristicasProdutos = new HashSet<>();
+        for (CaracteristicasProdutoDTORequest c:caracteristicasProdutodto) {
+            caracteristicasProdutos.add(c.converter(this));
+        }
+        this.caracteristicasProduto.addAll(caracteristicasProdutos);
+        */
 
 
         this.caracteristicasProduto.addAll(caracteristicasProdutodto.stream()
@@ -79,6 +90,18 @@ public class Produto {
         this.quantidade = quantidade;
     }
 
+    public void setListaImagens(Set<ImagemDoProduto> listaImagens) {
+        this.listaImagens = listaImagens;
+    }
+
+    public boolean verificaEAbateQuantidade(ProdutoRepository produtoRepository){
+        if(this.getQuantidade() >= this.quantidade){
+            this.setQuantidade(this.getQuantidade() - this.quantidade);
+            produtoRepository.save(this);
+            return true;
+        }
+        return false;
+    }
 
     public Usuario getVendedor() {
         return vendedor;
@@ -115,6 +138,11 @@ public class Produto {
     public LocalDateTime getInstanteCadastro() {
         return instanteCadastro;
     }
+
+    public Set<ImagemDoProduto> getListaImagens() {
+        return listaImagens;
+    }
+
 
 
     public String montarInfos() {
