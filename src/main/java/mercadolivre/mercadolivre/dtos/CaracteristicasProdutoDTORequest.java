@@ -6,17 +6,17 @@ import mercadolivre.mercadolivre.entities.Produto;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-public class CaracteristicasProdutoDTO {
+public class CaracteristicasProdutoDTORequest {
 
     private String nome;
     private String descricao;
     private Long idProduto;
 
-    public CaracteristicasProdutoDTO() {
+    public CaracteristicasProdutoDTORequest() {
 
     }
 
-    public CaracteristicasProdutoDTO(String nome, String descricao) {
+    public CaracteristicasProdutoDTORequest(String nome, String descricao) {
         this.nome = nome;
         this.descricao = descricao;
     }
