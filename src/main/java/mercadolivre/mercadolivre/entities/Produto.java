@@ -1,7 +1,6 @@
 package mercadolivre.mercadolivre.entities;
 
 import io.jsonwebtoken.lang.Assert;
-import mercadolivre.mercadolivre.dtos.CaracteristicasProdutoDTO;
 import mercadolivre.mercadolivre.repositories.ProdutoRepository;
 
 import javax.persistence.*;
