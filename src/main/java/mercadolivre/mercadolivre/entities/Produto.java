@@ -30,10 +30,6 @@ public class Produto {
     @OneToMany(mappedBy = "produto", cascade = CascadeType.PERSIST)
     private Set<CaracteristicasProduto> caracteristicasProduto = new HashSet<>();  // um produto pode ter várias características
 
-
-    @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
-    private Set<Opiniao> opinioes = new HashSet<>();
-
     @ManyToOne
     private Categoria categoria;
 
@@ -45,6 +41,14 @@ public class Produto {
     @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
     private Set<ImagemDoProduto> listaImagens = new HashSet<>();
 
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
+    private Set<Opiniao> opinioes = new HashSet<>();
+
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
+    private Set<Pergunta> perguntas = new HashSet<>();
+
+   // @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
+   // private Set<Compra> compras = new HashSet<>();
 
 
     public Produto() {
@@ -147,7 +151,13 @@ public class Produto {
         return listaImagens;
     }
 
+    public Set<Opiniao> getOpinioes() {
+        return opinioes;
+    }
 
+    public Set<Pergunta> getPerguntas() {
+        return perguntas;
+    }
 
     public String montarInfos() {
         String infos = "Nome do produto: " + this.nome + "\n" +
