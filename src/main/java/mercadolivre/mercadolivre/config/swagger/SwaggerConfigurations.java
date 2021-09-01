@@ -15,6 +15,10 @@ import java.util.Arrays;
 @Configuration
 public class SwaggerConfigurations {
 
+    /**
+     * documentação das rotas cadastradas
+     * @return --> configuração swagger
+     */
     @Bean
     public Docket forumApi() {
         return new Docket(DocumentationType.SWAGGER_2)

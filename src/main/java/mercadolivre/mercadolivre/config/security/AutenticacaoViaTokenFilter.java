@@ -22,6 +22,14 @@ public class AutenticacaoViaTokenFilter extends OncePerRequestFilter {
         this.usuarioRepository = usuarioRepository;
     }
 
+    /**
+     * doFilterInternal verifica se o token está requisição e se é válido
+     * @param request --> a requisição http que foi enviada pelo uauário
+     * @param response --> resposta que o servidor dará
+     * @param filterChain --> cadeia de filtros que filtra as informações da requisição
+     * @throws ServletException --> Caso dê erro no servidor
+     * @throws IOException --> Caso uma das entradas seja inválida (request, response, filterChain)
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {

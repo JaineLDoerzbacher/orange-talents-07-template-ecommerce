@@ -1,6 +1,7 @@
 package mercadolivre.mercadolivre.entities;
 
 import io.jsonwebtoken.lang.Assert;
+import mercadolivre.mercadolivre.dtos.CaracteristicasProdutoDTORequest;
 import mercadolivre.mercadolivre.repositories.ProdutoRepository;
 
 import javax.persistence.*;
@@ -54,7 +55,7 @@ public class Produto {
     }
 
     public Produto(String nome, BigDecimal preco, Integer quantidade, String descricao,
-                   Collection<CaracteristicasProdutoDTO> caracteristicasProdutodto,
+                   Collection<CaracteristicasProdutoDTORequest> caracteristicasProdutodto,
                    Categoria categoria,Usuario vendedor) {
         this.nome = nome;
         this.preco = preco;
@@ -159,6 +160,7 @@ public class Produto {
     }
 
     public String montarInfos() {
+
         String infos = "Nome do produto: " + this.nome + "\n" +
                 "Descrição do produto: " + this.descricao + "\n" +
                 "Nome do vendedor: " + this.vendedor.getUsername() + "\n" +

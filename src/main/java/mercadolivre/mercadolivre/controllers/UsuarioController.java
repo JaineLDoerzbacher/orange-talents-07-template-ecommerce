@@ -26,6 +26,7 @@ public class UsuarioController {
     @Transactional
     @CacheEvict(value = "listaDeUsuarios", allEntries = true)
     public ResponseEntity cadastrar(@RequestBody @Valid UsuarioDTO usuarioDTO, UriComponentsBuilder uriBuilder){
+
         Usuario usuario = usuarioDTO.converter();
         usuarioRepository.save(usuario);
         return ResponseEntity.ok().build();

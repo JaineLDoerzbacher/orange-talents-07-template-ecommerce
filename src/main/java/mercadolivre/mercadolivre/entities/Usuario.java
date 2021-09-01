@@ -3,83 +3,74 @@ package mercadolivre.mercadolivre.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.validator.constraints.Length;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
-
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
+
+//A interface UserDetails diz quais são os requisitos obrigatórios do usuários
 @Entity
 public class Usuario implements UserDetails {
 
+    //@Id mostra qual a chave primária da entidade
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    //@Notblank indica que o campo não pode estar em branco e nem ser nulo
+    //@Email é a validação JAva para e-mail
     @NotBlank
     @Email
     private String login;
 
+    //@Length diz qual o minimo de caracteres que o campo deve ter
     @NotBlank @Length(min = 6)
     private String senha;
 
+    //@PastOrPresent a data nunca pode ser no futuro (intante de criação)
     @PastOrPresent
     @JsonFormat(pattern = "dd/MM/yyyy" )
     private LocalDateTime instanteCadastro = LocalDateTime.now();
 
+    //
     @ManyToMany(fetch = FetchType.EAGER)
     private List<PerfilUsuario> perfis = new ArrayList<>();
 
+    //Gera uma combinação de dados com um hash único para comparação de dados
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        return result;
+
+        return Objects.hash(id, login, senha, instanteCadastro);
     }
 
+    //Compara se dois objetos são iguais
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Usuario other = (Usuario) obj;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
-        return true;
+       return Objects.equals(this, obj);
     }
 
-
+    //Contrutor para inicialização da classe
     public Usuario() {
     }
 
+    //Contrutor da classe
     public Usuario(String login, String senha){
         this.login = login;
         this.senha = senha;
         this.instanteCadastro = LocalDateTime.now();
     }
 
+
     public Long getId() {
         return id;
     }
 
+    //Converte os campos em string
     @Override
     public String toString() {
         return "Usuario{" +
@@ -90,6 +81,7 @@ public class Usuario implements UserDetails {
                 '}';
     }
 
+    //Verifica se o usuário está logado
     public static boolean logado(Optional<Usuario> usuarioLogado){
         if(usuarioLogado.isPresent()){
             if(usuarioLogado.get() != null){
@@ -99,10 +91,12 @@ public class Usuario implements UserDetails {
         return false;
     }
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.perfis;
     }
+
 
     @Override
     public String getPassword() {
@@ -114,21 +108,25 @@ public class Usuario implements UserDetails {
         return this.login;
     }
 
+    // Método da interface UserDetails que verifica se a conta não está expirada
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    // Método da interface UserDetails que verifica se a conta não está bloqueada
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
+    // Método da interface UserDetails que verifica se a senha não está expirada
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    // Método da interface UserDetails que verifica se o usuário está habilitado ou não
     @Override
     public boolean isEnabled() {
         return true;

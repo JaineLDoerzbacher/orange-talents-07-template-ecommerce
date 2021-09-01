@@ -19,6 +19,11 @@ public class TokenService {
     @Value("${mercadolivre.jwt.secret}")
     private String secret;
 
+    /**
+     * gerarToken metodo para gerar um token
+     * @param authentication --> autenticação do usuário que logou no sistema
+     * @return --> Retorno do Token gerado
+     */
     public String gerarToken(Authentication authentication) {
         Usuario logado = (Usuario) authentication.getPrincipal();
         Date hoje = new Date();
@@ -32,6 +37,7 @@ public class TokenService {
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }
+
 
     public boolean isTokenValido(String token) {
         try {

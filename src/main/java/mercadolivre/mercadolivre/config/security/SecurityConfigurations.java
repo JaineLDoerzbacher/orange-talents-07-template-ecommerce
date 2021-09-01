@@ -37,20 +37,21 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
     }
 
 
-    /*@Override
-    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.inMemory().withClient("pgcil").secret("{noop}secret").scopes("read", "write")
-                .authorizedGrantTypes("password", "refresh_token").accessTokenValiditySeconds(3600)
-                .refreshTokenValiditySeconds(18000);
-    }
-    */
-    //Configuracoes de autenticacao
+    /**
+     * configure metódo responsavelpor configurar a autenticação
+      * @param auth --> Contrutor do autenticationManager
+     * @throws Exception --> gera exceção caso não consiga contruir
+     */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(autenticacaoService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
-    //Configuracoes de autorizacao
+    /**
+     * Método que especifica quais são as permissões necessárias para acessar determinadas rotas
+     * @param http --> verifica o endereço da requisição
+     * @throws Exception --> se tiver algo errado é lançada uma exceção
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.antMatcher("/**")
@@ -66,7 +67,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/notafiscal").permitAll()
                 .antMatchers(HttpMethod.DELETE, "/categorias/*").hasRole("MODERADOR")
                 .antMatchers(HttpMethod.POST, "/produtos/*").hasRole("MODERADOR")
-                .anyRequest().authenticated()
+                .anyRequest().authenticated() //todas as outras requisições não especificadas tem que ser autenticadas
                 .and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().addFilterBefore(new AutenticacaoViaTokenFilter(tokenService, usuarioRepository), UsernamePasswordAuthenticationFilter.class);
